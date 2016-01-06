@@ -1,20 +1,30 @@
 var Profile = require("./profile.js");
 var renderer = require("./renderer.js");
-
+var commonHeader = {'Content-Type': 'text/html'};
+var querystring = require("querystring");
 
 function home(request, response){
 	if (request.url === "/") {
-		response.writeHead(200, {'Content-Type': 'text/plain'});
-		renderer.view("header", {}, response);
-		renderer.view("search", {}, response);
-		renderer.view("footer", {}, response);
+		if (request.method. toLowerCase() === "get") {}
+			response.writeHead(200, commonHeader);
+			renderer.view("header", {}, response);
+			renderer.view("search", {}, response);
+			renderer.view("footer", {}, response);
+			response.end();
+		} else {
+			request.on("data", function(postBody){
+				var query = querystring.parse(postBody.toString());
+				response.writeHead(303, {"Location": "/" + query.username });
+				response.end();
+			});
+		}
 	}
 }
 
 function user(request, response) {
 	var user = request.url.replace("/", "");
 	if (username.length > 0) {
-		response.writeHead(200, {'Content-Type': 'text/plain'});
+		response.writeHead(200, commonHeader);
 		renderer.view("header", {}, response);
 		
 		//get json from treehouse
@@ -32,6 +42,7 @@ function user(request, response) {
 			//simple response
 			renderer.view("profile", values, response);
 			renderer.view("footer", {}, response);
+			response.end();
 		});
 
 			//on error
@@ -40,6 +51,7 @@ function user(request, response) {
 			renderer.view("error", {errorMessage: error.message}, response);
 			renderer.view("search", {}, response);
 			renderer.view("footer", {}, response);
+			response.end();
 		});
 	}
 }
