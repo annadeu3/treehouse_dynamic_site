@@ -5,7 +5,7 @@ var querystring = require("querystring");
 
 function home(request, response){
 	if (request.url === "/") {
-		if (request.method. toLowerCase() === "get") {}
+		if (request.method.toLowerCase() === "get") {}
 			response.writeHead(200, commonHeader);
 			renderer.view("header", {}, response);
 			renderer.view("search", {}, response);
